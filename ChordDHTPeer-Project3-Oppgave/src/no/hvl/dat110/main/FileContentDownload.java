@@ -33,7 +33,7 @@ public class FileContentDownload extends JFrame {
 	public FileContentDownload() {
 
 		setBounds(100, 100, 400, 300);
-		setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout()); 
 		
 		// add list components
 		txtArea = new JTextArea();
