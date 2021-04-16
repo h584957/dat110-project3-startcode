@@ -67,7 +67,7 @@ public class FileManager {
 		for (int i = 0; i < numReplicas; i++) {
 			String rep = filename + i;
 			BigInteger hashRep = Hash.hashOf(rep);
-			replicafiles[i] = hashRep;
+			replicafiles[i] = hashRep; 
 		}
 	}
 	
