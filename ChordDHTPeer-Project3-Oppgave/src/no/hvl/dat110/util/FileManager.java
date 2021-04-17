@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Savepoint;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import no.hvl.dat110.middleware.ChordLookup;
 import no.hvl.dat110.middleware.Message;
 import no.hvl.dat110.rpc.interfaces.NodeInterface;
 import no.hvl.dat110.util.Hash;
@@ -80,13 +82,23 @@ public class FileManager {
     	int counter = 0;
     	
     	// Task1: Given a filename, make replicas and distribute them to all active peers such that: pred < replica <= peer
-    	
+		
     	// Task2: assign a replica as the primary for this file. Hint, see the slide (project 3) on Canvas
-    	
+    	Random rnd = new Random();
+    	int index = rnd.nextInt(Util.numReplicas-1);
     	// create replicas of the filename
-    	
+    	createReplicaFiles();
 		// iterate over the replicas
-    	
+    	for(BigInteger rep : replicafiles) {
+    		NodeInterface succ = chordnode.findSuccessor(rep);
+    		succ.addKey(rep);
+    		if(counter==index) {
+    			chordnode.saveFileContent(filename, rep, bytesOfFile,true );
+    		} else {
+    		chordnode.saveFileContent(filename, rep, bytesOfFile, false);
+    		}
+    		counter++;
+    	}
     	// for each replica, find its successor by performing findSuccessor(replica)
     	
     	// call the addKey on the successor and add the replica
