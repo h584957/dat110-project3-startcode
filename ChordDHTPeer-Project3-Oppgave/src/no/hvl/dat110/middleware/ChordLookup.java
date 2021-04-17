@@ -58,7 +58,7 @@ public class ChordLookup {
 		// collect the entries in the finger table for this node
 		List<NodeInterface> finger = node.getFingerTable();
 		// starting from the last entry, iterate over the finger table
-		for (int i = finger.size(); i >=0 ; i--) {
+		for (int i = finger.size()-1; i >=0 ; i--) {
 			if(Util.computeLogic(finger.get(i).getNodeID(), node.getNodeID().add(BigInteger.ONE), key.subtract(BigInteger.ONE))) {
 				return finger.get(i);
 			}
