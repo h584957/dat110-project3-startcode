@@ -167,7 +167,7 @@ public class FileManager {
 		// return the primary
 		for(Message peer : activeNodesforFile) {
 			if(peer.isPrimaryServer()) {
-				return Util.getProcessStub(peer.getNameOfFile(), peer.getPort());
+				return Util.getProcessStub(peer.getNodeIP(), peer.getPort());
 			}
 		}
 		return null;
