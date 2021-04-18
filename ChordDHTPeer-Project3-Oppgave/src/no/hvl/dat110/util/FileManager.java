@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import org.junit.runner.Computer;
+
 import no.hvl.dat110.middleware.Message;
 import no.hvl.dat110.rpc.interfaces.NodeInterface;
 import no.hvl.dat110.util.Hash;
@@ -94,9 +96,9 @@ public class FileManager {
 			NodeInterface succ = chordnode.findSuccessor(rep);
 			succ.addKey(rep);
 			if (counter == index) {
-				chordnode.saveFileContent(filename, rep, bytesOfFile, true);
+				chordnode.saveFileContent(filename, succ.getNodeID(), bytesOfFile, true);
 			} else {
-				chordnode.saveFileContent(filename, rep, bytesOfFile, false);
+				chordnode.saveFileContent(filename, succ.getNodeID(), bytesOfFile, false);
 			}
 			counter++;
 		}
@@ -132,8 +134,6 @@ public class FileManager {
 				Message info = succ.getFilesMetadata(rep);
 				succinfo.add(info);
 			}
-			
-		
 		// for each replica, do findSuccessor(replica) that returns successor s.
 
 		// get the metadata (Message) of the replica from the successor, s (i.e. active
@@ -150,6 +150,7 @@ public class FileManager {
 	 * Find the primary server - Remote-Write Protocol
 	 * 
 	 * @return
+	 * @throws RemoteException 
 	 */
 	public NodeInterface findPrimaryOfItem() {
 
@@ -164,7 +165,11 @@ public class FileManager {
 		// check if it is the primary or not
 
 		// return the primary
-
+		for(Message peer : activeNodesforFile) {
+			if(peer.isPrimaryServer()) {
+				return Util.getProcessStub(peer.getNameOfFile(), peer.getPort());
+			}
+		}
 		return null;
 	}
 
