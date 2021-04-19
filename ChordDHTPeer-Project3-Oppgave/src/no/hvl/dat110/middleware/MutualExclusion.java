@@ -142,7 +142,7 @@ public class MutualExclusion {
 				// if clocks are the same, compare nodeIDs, the lowest wins
 				// if sender wins, acknowledge the message, obtain a stub and call onMutexAcknowledgementReceived()
 				// if sender looses, queue it
-				
+				// use the clock on the Messages! node.getMessage().getClock()
 				
 
 				break;

@@ -15,6 +15,7 @@ import java.sql.Savepoint;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -96,9 +97,9 @@ public class FileManager {
 			NodeInterface succ = chordnode.findSuccessor(rep);
 			succ.addKey(rep);
 			if (counter == index) {
-				chordnode.saveFileContent(filename, succ.getNodeID(), bytesOfFile, true);
+				succ.saveFileContent(filename, rep, bytesOfFile, true);
 			} else {
-				chordnode.saveFileContent(filename, succ.getNodeID(), bytesOfFile, false);
+				succ.saveFileContent(filename, rep, bytesOfFile, false);
 			}
 			counter++;
 		}
@@ -109,7 +110,7 @@ public class FileManager {
 		// call the saveFileContent() on the successor
 
 		// increment counter
-
+		
 		return counter;
 	}
 
@@ -131,7 +132,8 @@ public class FileManager {
 		for (BigInteger rep : replicafiles) {
 
 				NodeInterface succ = chordnode.findSuccessor(rep);
-				Message info = succ.getFilesMetadata(rep);
+				Map<BigInteger, Message> map = succ.getFilesMetadata();
+				Message info = map.get(rep);
 				succinfo.add(info);
 			}
 		// for each replica, do findSuccessor(replica) that returns successor s.
